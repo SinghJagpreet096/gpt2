@@ -20,4 +20,4 @@ def main():
             f.write(s + "\n")        
         
     end_time = time.time()
-    # processing_time(start_time,end_time)
+    processing_time(start_time,end_time)

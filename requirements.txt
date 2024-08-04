@@ -1,0 +1,8 @@
+torch
+click
+tiktoken
+accelerate
+datasets
+nltk
+rouge
+chainlit

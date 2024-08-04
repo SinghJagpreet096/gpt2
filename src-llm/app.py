@@ -11,9 +11,14 @@ bos, eos = SpecialToken.start_token, SpecialToken.end_token
 allowed_special = {bos,eos}
 tokenizer = tiktoken.get_encoding("gpt2")
 model = GPTModel(GPT_CONFIG_124M).to(device)
-model.load_state_dict(torch.load("src-llm/artifacts/model_qa_2024-03-24_06-04-14.pt"))
+model.load_state_dict(torch.load("src-llm/artifacts/model_2024-08-04_14-58-06.pt",weights_only=True))
 end_token = tokenizer.encode(eos,allowed_special=allowed_special)
+# print(model)
 
+
+# context = torch.tensor(tokenizer.encode("Hello, how are you?", allowed_special=allowed_special)).view(1, -1)
+# pred = tokenizer.decode(model.generate(context,max_new_tokens=100,end_token=end_token)[0].tolist())
+# print(pred)
 
 @cl.on_message
 async def main(message: cl.Message):
@@ -28,7 +33,7 @@ async def main(message: cl.Message):
     pred = tokenizer.decode(model.generate(context, 
                                            max_new_tokens=100,
                                            end_token = end_token,)[0].tolist())
-    # pred = pred.split(bos)[-1].strip()
+    pred = pred.split(bos)[-1].strip()
     print('output',pred)
     # Send a response back to the user
     await cl.Message(

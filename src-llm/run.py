@@ -29,7 +29,7 @@ FINE_TUNE_SAVE = "fine_tune_and_save"
 def run_pipelines(config:str):
     start_time = time.time()
     if config == DATA_PREP:
-        sql_create_context.main()
+        prepare_data_openweb.main()
     # elif config == DATA_PREP_FT:
     #     create_ft_data.main()
     elif config == PRETRAIN:

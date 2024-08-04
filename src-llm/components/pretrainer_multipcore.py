@@ -44,7 +44,7 @@ def main(save=False):
             out[split] = losses.mean()
         model.train()
         return out
-    data_path = "src-llm/data/train/sql_context.txt"
+    data_path = "src-llm/data/train/webtext-20p.txt"
     with open(data_path, "r", encoding="utf-8") as f:
             text = f.read()
     print(f"length of text: {len(text):,}")
