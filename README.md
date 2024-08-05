@@ -1,18 +1,25 @@
-## GPT FROM SCRATCH
-The following is the code to train a Generative Pretrained Transformer model from scratch. Using the code you can train your own small chatbot similar to ChatGPT for your application or use case. 
+# GPT FROM SCRATCH
+This repository contains code to train a Generative Pretrained Transformer (GPT) model from scratch. Using this code, you can train your own small chatbot similar to ChatGPT for your application or use case.
 
-Please note, it is only for learning purpose as training an actual LLM requires alot of compute and data.
+Please note, this is for learning purposes only, as training a fully-fledged LLM requires substantial computational resources and data.
 
 
-How the run the code 
-create virtual env
-```bash 
-$ pyenv virtualenv 3.10.12 <env name>
+## Setup
 
-$ pyenv activate <env name>
-
-$ pip install -r requirements.txt
-```
+### Create Virtual Environment
+1. Create a virtual environment:
+    ```sh
+    pyenv virtualenv 3.10.12 <env_name>
+    ```
+2. Activate the virtual environment:
+    ```sh
+    pyenv activate <env_name>
+    ```
+3. Install the required packages:
+    ```sh
+    pip install -r requirements.txt
+    ```
+## Pretraining
 
 1. Create Data for pretraining
 ```bash
@@ -57,10 +64,13 @@ $ python src-llm/run.py -c finetune
 $ streamlit run src-llm/app.py
 ```
 
+## Important Note
 
-Please note, it is only for learning purpose as training an actual LLM requires alot of compute and data. So, do your own research if planning to implement this in any production environment.
+This project is intended for learning purposes. Training a production-level LLM requires extensive computational power and data. Please conduct thorough research before implementing this in any production environment.
 
-Please reach out if encounter any issues or want to contribute. I'd be happy to chat.
+## Contributions
+
+If you encounter any issues or wish to contribute, please reach out. I'd be happy to collaborate.
 
 ## References
 
