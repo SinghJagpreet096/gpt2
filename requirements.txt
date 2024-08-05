@@ -6,3 +6,4 @@ datasets
 nltk
 rouge
 chainlit
+pandas

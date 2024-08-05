@@ -16,12 +16,12 @@ torch.manual_seed(0)
 accelerator = Accelerator()
 
 allowed_special = {"<|startoftext|>","<|endoftext|>"}
-n_freeze = 8 # total layer is 12
+n_freeze = 6 # total layer is 12
 batch_size = GPT_CONFIG_124M["batch_size"]
 block_size = GPT_CONFIG_124M["ctx_len"]
 learning_rate = GPT_CONFIG_124M["learning_rate"]
 device = accelerator.device
-eval_iters = 200
+eval_iters = GPT_CONFIG_124M["eval_iters"]
 max_iters = GPT_CONFIG_124M["max_iters"]
 eval_interval = GPT_CONFIG_124M["eval_interval"]
 
@@ -57,7 +57,7 @@ def main(save=False):
 
 
 
-    with open ("data/finetune/spider_train.txt", "r") as f:
+    with open ("src-llm/data/finetune/spider_train.txt", "r") as f:
         data = f.read()
     n = int(len(data)*0.8)
     train_data = data[:n]
@@ -67,7 +67,7 @@ def main(save=False):
 
     # load the model
     model = GPTModel(GPT_CONFIG_124M).to(device)
-    model.load_state_dict(torch.load('artifacts/model_2024-03-23_01-39-17.pt'))
+    model.load_state_dict(torch.load('src-llm/artifacts/model_2024-08-04_14-58-06.pt',weights_only=True))
     logging.info("Model loaded")
     print("Model loaded")
 
@@ -91,7 +91,7 @@ def main(save=False):
     
     # training loop
     # model.train()
-    for iter in range(10000):
+    for iter in range(max_iters):
 
         # every once in a while evaluate the loss on train and val sets
         if iter % eval_interval == 0 or iter == max_iters - 1:
@@ -100,32 +100,17 @@ def main(save=False):
 
     # # sample a batch of data
         xb, yb = get_batch(train_data)
-    #     # print(type(xb), type(yb))
-
     #     # evaluate the loss
         logits, loss = model(xb, yb)
         optimizer.zero_grad(set_to_none=True)
         # loss.backward()
         accelerator.backward(loss)
-        optimizer.step()
-        # genarate a sequence of tokens
-    # tokenizer = tiktoken.get_encoding('gpt2')
-    # prompt = f"USER: How many singers do we have?\nAGENT: <|startoftext|>"
-    # context = torch.tensor(tokenizer.encode(prompt,allowed_special=allowed_special)).view(1, -1)
-    # simple_generate = (tokenizer.decode(model.generate(context, max_new_tokens=100)[0].tolist()))
-    # print("\n\n")
-    # # query_generator = (tokenizer.decode(model.generate_query(context, max_new_tokens=100,end_token = tokenizer.encode("<|endoftext|>",allowed_special=allowed_special))[0].tolist()))
-
-    # print("Simple generate: \n", simple_generate)
-    # print("Simple generate length: ", len(simple_generate)," \n\n")
-    # print("Query generate: \n", query_generator)
-    # print("Query generate length:", len(query_generator)," \n\n")
-    
+        optimizer.step()    
     def save_model():
         os.makedirs("src-llm/artifacts", exist_ok=True)
         current_datetime = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         # save the model
-        torch.save(model.state_dict(), f"artifacts/model_qa_{current_datetime}.pt")
+        torch.save(model.state_dict(), f"src-llm/artifacts/model_qa_{current_datetime}.pt")
         logging.info(f"model saved as model_{current_datetime}.pt")
         print(f"model saved as model_{current_datetime}.pt")
     if save:
